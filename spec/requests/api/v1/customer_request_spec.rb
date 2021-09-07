@@ -5,8 +5,22 @@ describe "Customer API" do
     create_list(:customer, 3)
 
     get api_v1_customers_path
-    require "pry"; binding.pry
 
     expect(response).to be_successful
+
+    customers = JSON.parse(response.body)
+
+    expect(customers.count).to eq(3)
+  end
+
+  it "can get one item by its id" do
+    id = create(:customer).id
+
+    get api_v1_customer_path(id)
+
+    customer = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(customer["id"]).to eq(id)
   end
 end
