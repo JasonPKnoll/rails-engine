@@ -71,7 +71,6 @@ describe "Item API" do
 
       it "page 0 or lower results as if page 1", :with_many_items do
         get api_v1_items_path, params: { page: 0 }
-
         items = JSON.parse(response.body, symbolize_names: true)
 
         item_names = items[:data].map { |item| item[:attributes][:name] }
@@ -96,9 +95,10 @@ describe "Item API" do
   describe "can create items" do
     describe ":: happy paths" do
       it "creates an item" do
-        item_params = {name: "generic item", description: "it does the thing"}
+        merchant_id = create(:merchant).id
+        item_params = {name: "generic item", description: "it does the thing", unit_price: 100.0, merchant_id: merchant_id}
 
-        post "api/v1/items", params: {item: item_params}
+        post '/api/v1/items', params: {item: item_params}
         item = Item.last
 
         expect(response).to be_successful
