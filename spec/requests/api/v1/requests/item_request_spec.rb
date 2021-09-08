@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe "Item API" do
   before(:each, :with_one_item) do
-    merchant_id = create(:merchant).id
-    @item = create(:item, merchant_id: merchant_id)
+    @merchant = create(:merchant)
+    @item = create(:item, merchant_id: @merchant.id)
   end
 
   before(:each, :with_many_items) do
@@ -128,6 +128,19 @@ describe "Item API" do
 
         expect(response).to be_successful
         expect(Item.count).to eq(0)
+      end
+    end
+  end
+
+  describe "can grab merchant by item id" do
+    describe ":: happy path" do
+      it "gets merchant by item id", :with_one_item do
+
+        get "/api/v1/items/#{@item.id}/merchant"
+        merchant = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to be_successful
+        expect(merchant[:data][:id]).to eq("#{@merchant.id}")
       end
     end
   end
