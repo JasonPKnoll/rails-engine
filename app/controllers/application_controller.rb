@@ -10,4 +10,8 @@ class ApplicationController < ActionController::API
     [ params.fetch(:per_page, default).to_i, default ].max
   end
 
+  def record_not_found
+    render json: {"error" => "404 Not Found"}, status: 404
+  end
+
 end
