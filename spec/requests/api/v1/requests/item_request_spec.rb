@@ -106,4 +106,29 @@ describe "Item API" do
       end
     end
   end
+
+  describe "can manipulate items" do
+    describe ":: happy paths" do
+      it "updates an item", :with_one_item do
+        previous_name = @item.name
+        item_params = {name: "Big Chungus"}
+
+        put "/api/v1/items/#{@item.id}", params: {item: item_params}
+        updated_item = Item.last
+
+        expect(response).to be_successful
+        expect(updated_item.name).to_not eq(previous_name)
+        expect(updated_item.name).to eq(item_params[:name])
+      end
+
+      it "can destroy an item", :with_one_item do
+        expect(Item.count).to eq(1)
+
+        delete "/api/v1/items/#{@item.id}"
+
+        expect(response).to be_successful
+        expect(Item.count).to eq(0)
+      end
+    end
+  end
 end
