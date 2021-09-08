@@ -15,15 +15,31 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def create
-    render json: Item.create(item_params)
+    item = Item.create(item_params)
+    render json: ItemSerializer.new(item), status:201
   end
 
+
   def update
-    render json: Item.update(params[:id], item_params)
+    if params[:id].nil?
+      record_not_found
+    else
+      # item = Item.find_by_id(params[:id])
+      # merchant = Merchant.find_by_id(item.merchant_id)
+
+      item = Item.update(params[:id], item_params)
+      render json: ItemSerializer.new(item), status: 200
+    end
   end
 
   def destroy
     Item.delete(params[:id])
+  end
+
+  def find_merchant
+    item = Item.find_by_id(params[:item_id])
+    merchant = Merchant.find_by_id(item.merchant_id)
+    render json: MerchantSerializer.new(merchant)
   end
 
   private
