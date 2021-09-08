@@ -17,7 +17,7 @@ describe "Merchant Items API" do
     merchant_id = 1
 
     get "/api/v1/merchants/#{merchant_id}/items"
-
-    expect(response.body).to eq(404)
+    
+    expect(response.status).to eq(404)
   end
 end

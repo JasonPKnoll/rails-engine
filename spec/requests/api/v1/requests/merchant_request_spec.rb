@@ -37,12 +37,6 @@ describe "Merchant API" do
     expect(merchant_names).to_not include("not_a_real_name_2")
   end
 
-  xit "can return more than the default 20 merchants" do
-    expect(Merchant).to receive(:per_page).with(100).and_call_original
-
-    get api_v1_merchants_path, params: { per_page: 100 }
-  end
-
   it "can return specified amount all merchants if per_page is big" do
     create_list(:merchant, 22)
 
@@ -53,17 +47,30 @@ describe "Merchant API" do
     expect(merchants[:data].count).to eq(22)
   end
 
-  it "can grab a merchant by that merchants id" do
-    id = create(:merchant).id
-    id_2 = create(:merchant).id
+  describe "::find by merchant id" do
 
-    get api_v1_merchant_path(id)
+    describe "::happy path" do
+      it "can grab a merchant by that merchants id" do
+        id = create(:merchant).id
+        id_2 = create(:merchant).id
 
-    expect(response).to be_successful
+        get api_v1_merchant_path(id)
 
-    merchant = JSON.parse(response.body)
+        expect(response).to be_successful
 
-    expect(merchant["data"]["id"]).to eq("#{id}")
-    expect(merchant["data"]["id"]).to_not eq("#{id_2}")
+        merchant = JSON.parse(response.body)
+
+        expect(merchant["data"]["id"]).to eq("#{id}")
+        expect(merchant["data"]["id"]).to_not eq("#{id_2}")
+      end
+    end
+
+    describe ":: sad path" do
+      it "renders 404 when no merchant found by id" do
+        get api_v1_merchant_path(1)
+
+        expect(response.status).to eq(404)
+      end
+    end
   end
 end
