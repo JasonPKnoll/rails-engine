@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe "Item API" do
+  before(:each, :with_one_item) do
+    merchant_id = create(:merchant).id
+    @item = create(:item, merchant_id: merchant_id)
+  end
+
   before(:each, :with_many_items) do
     merchant_id = create(:merchant).id
     create(:item, merchant_id: merchant_id, name: "not_a_real_item_1")
@@ -14,8 +19,8 @@ describe "Item API" do
   before(:each, :with_items) do
     merchant_id = create(:merchant).id
     merchant_id_2 = create(:merchant).id
-    create_list(:item, 5, merchant_id: merchant_id)
-    create_list(:item, 5, merchant_id: merchant_id_2)
+    create_list(:item, 2, merchant_id: merchant_id)
+    create_list(:item, 3, merchant_id: merchant_id_2)
   end
 
   describe ":: grab items" do
@@ -26,7 +31,16 @@ describe "Item API" do
         items = JSON.parse(response.body, symbolize_names: true)
 
         expect(response).to be_successful
-        expect(items[:data].count).to eq(10)
+        expect(items[:data].count).to eq(5)
+      end
+
+      it "can return one item by id", :with_one_item do
+        get api_v1_item_path(@item)
+        item = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to be_successful
+        expect(item.count).to eq(1)
+        expect(item[:data][:id]).to eq("#{@item.id}")
       end
 
       it "default returns 20 items", :with_many_items do
@@ -49,6 +63,12 @@ describe "Item API" do
     end
 
     describe ":: sad path" do
+      it "404s with invalid item id" do
+        get api_v1_item_path(1)
+
+        expect(response.status).to eq(404)
+      end
+
       it "page 0 or lower results as if page 1", :with_many_items do
         get api_v1_items_path, params: { page: 0 }
 
@@ -71,6 +91,19 @@ describe "Item API" do
         expect(item_names).to_not include("not_a_real_item_3")
       end
     end
+  end
 
+  describe "can create items" do
+    describe ":: happy paths" do
+      it "creates an item" do
+        item_params = {name: "generic item", description: "it does the thing"}
+
+        post "api/v1/items", params: {item: item_params}
+        item = Item.last
+
+        expect(response).to be_successful
+        expect(item.name).to eq(item_params[:name])
+      end
+    end
   end
 end
