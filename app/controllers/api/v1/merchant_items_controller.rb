@@ -3,7 +3,7 @@ class Api::V1::MerchantItemsController < ApplicationController
 
   def index
     merchant = Merchant.find_by_id(params[:merchant_id])
-    if merchant.equal?(nil)
+    if merchant.nil?
       record_not_found
     else
       render json: ItemSerializer.new(merchant.items)
