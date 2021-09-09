@@ -25,7 +25,7 @@ class Api::V1::ItemsController < ApplicationController
       record_not_found
     else
       item = Item.find_by_id(params[:id])
-      if item.nil?
+      if item.nil? or item.merchant_id.nil?
         record_not_found
       else
       # merchant = Merchant.find_by_id(item.merchant_id)
@@ -42,7 +42,11 @@ class Api::V1::ItemsController < ApplicationController
   def find_merchant
     item = Item.find_by_id(params[:item_id])
     merchant = Merchant.find_by_id(item.merchant_id)
-    render json: MerchantSerializer.new(merchant)
+    if merchant.nil? or item.nil?
+      record_not_found
+    else
+      render json: MerchantSerializer.new(merchant)
+    end
   end
 
   private
