@@ -5,6 +5,6 @@ class Merchant < ApplicationRecord
     merchants = Merchant.arel_table
     Merchant.where(merchants[:name].matches("%#{search}%")).order(:name).first
 
-    # where("name.downcase ILIKE ?", "#{name}%.").order(:name)
+    # where("name.downcase ILIKE ?", "#{name}%.").order(:name).first
   end
 end
