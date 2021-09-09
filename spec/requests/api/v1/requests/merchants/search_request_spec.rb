@@ -8,7 +8,8 @@ describe "Merchant search API" do
   describe "::Find by name" do
     describe "::Happy path" do
       it "finds the merchant by name", :with_merchants do
-        get "/api/v1/merchants/find?name=find" #, params: { search: "Find" }
+        search = "find"
+        get "/api/v1/merchants/find?name=#{search}" #, params: { search: "Find" }
 
         merchants = JSON.parse(response.body, symbolize_names: true)
 
@@ -22,7 +23,8 @@ describe "Merchant search API" do
 
         merchants = JSON.parse(response.body, symbolize_names: true)
 
-        expect(response.status).to eq(404)
+        expect(response).to be_an(Object)
+        expect(response.body).to include("data")
       end
     end
   end
