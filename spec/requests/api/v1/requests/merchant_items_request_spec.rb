@@ -10,6 +10,7 @@ describe "Merchant Items API" do
     get "/api/v1/merchants/#{merchant_id}/items"
 
     merchant_items = JSON.parse(response.body, symbolize_names: true)
+
     expect(merchant_items[:data].count).to eq(3)
   end
 
@@ -17,7 +18,7 @@ describe "Merchant Items API" do
     merchant_id = 1
 
     get "/api/v1/merchants/#{merchant_id}/items"
-    
+
     expect(response.status).to eq(404)
   end
 end

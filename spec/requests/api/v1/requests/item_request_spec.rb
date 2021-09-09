@@ -130,6 +130,15 @@ describe "Item API" do
         expect(Item.count).to eq(0)
       end
     end
+
+    describe "::sad path" do
+      it "gives 404 on non existant item id" do
+        item_params = {name: "Big Chungus"}
+        put "/api/v1/items/#{2}", params: {item: item_params}
+
+        expect(response.status).to eq(404)
+      end
+    end
   end
 
   describe "can grab merchant by item id" do
