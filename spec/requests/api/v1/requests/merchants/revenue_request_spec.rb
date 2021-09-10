@@ -78,6 +78,7 @@ describe "Merchant Rev API" do
 
         revenue = JSON.parse(response.body, symbolize_names: true)
 
+        require "pry"; binding.pry
         expect(response).to be_successful
         expect(revenue[:data].count).to eq(3)
         expect(revenue[:data][0][:attributes][:name]).to eq(@merchant_2.name)
