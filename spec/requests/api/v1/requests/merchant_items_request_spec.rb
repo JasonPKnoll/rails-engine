@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe "Merchant Items API" do
-  it "grabs all merchant items" do
+describe 'Merchant Items API' do
+  it 'grabs all merchant items' do
     merchant_id = create(:merchant).id
     merchant_id_2 = create(:merchant).id
     create_list(:item, 3, merchant_id: merchant_id)
@@ -14,7 +16,7 @@ describe "Merchant Items API" do
     expect(merchant_items[:data].count).to eq(3)
   end
 
-  it "returns 404 when no merchant found" do
+  it 'returns 404 when no merchant found' do
     merchant_id = 1
 
     get "/api/v1/merchants/#{merchant_id}/items"

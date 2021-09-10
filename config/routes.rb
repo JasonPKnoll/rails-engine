@@ -1,5 +1,6 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   get 'welcome/homepage'
   namespace :api do
     namespace :v1 do
@@ -8,15 +9,15 @@ Rails.application.routes.draw do
       get 'revenue/merchants', to: 'merchants/revenue#most_revenue_merchants'
       get 'items/find_all', to: 'items/search#find_all'
       get 'revenue/items', to: 'items/revenue#most_revenue_items'
+      get 'revenue/unshipped', to: 'merchant/revenue#unshipped'
 
-
-      resources :customers, only: [:index, :show]
-      resources :merchants, only: [:index, :show] do
+      resources :customers, only: %i[index show]
+      resources :merchants, only: %i[index show] do
         get '/items', to: 'merchant_items#index'
       end
 
-      resources :items, except: [:new, :edit] do
-        get "/merchant", to: 'items#find_merchant'
+      resources :items, except: %i[new edit] do
+        get '/merchant', to: 'items#find_merchant'
       end
     end
   end
