@@ -68,32 +68,13 @@ RSpec.describe Merchant, type: :model do
       expect(Merchant.find_most_revenue(3)).to eq([@merchant_2, @merchant_4, @merchant_3])
     end
 
-    before(:each, :with_five_plus_invoices) do
-      @merchant = create(:merchant)
-      @item = create(:item, merchant_id: @merchant.id)
-      @customer = create(:customer)
+    xit '::total_potential_revenue finds the revenue of unshipped orders', :with_multi_merchants_rev do
+      @invoice_1 = create(:invoice, merchant_id: @merchant_1.id, customer_id: @customer.id, status: 'shipped')
+      @invoice_2 = create(:invoice, merchant_id: @merchant_2.id, customer_id: @customer.id, status: 'unshipped')
+      @invoice_3 = create(:invoice, merchant_id: @merchant_3.id, customer_id: @customer.id, status: 'unshipped')
+      @invoice_4 = create(:invoice, merchant_id: @merchant_4.id, customer_id: @customer.id, status: 'unshipped')
 
-      @invoice_1 = create(:invoice, merchant_id: @merchant.id, customer_id: @customer.id, status: 'pending')
-      @invoice_2 = create(:invoice, merchant_id: @merchant.id, customer_id: @customer.id, status: 'pending')
-      @invoice_3 = create(:invoice, merchant_id: @merchant.id, customer_id: @customer.id, status: 'pending')
-      @invoice_4 = create(:invoice, merchant_id: @merchant.id, customer_id: @customer.id, status: 'pending')
-      @invoice_5 = create(:invoice, merchant_id: @merchant.id, customer_id: @customer.id, status: 'shipped')
-
-      create(:transaction, invoice_id: @invoice_1.id, result: 'success')
-      create(:transaction, invoice_id: @invoice_2.id, result: 'success')
-      create(:transaction, invoice_id: @invoice_3.id, result: 'success')
-      create(:transaction, invoice_id: @invoice_4.id, result: 'success')
-      create(:transaction, invoice_id: @invoice_5.id, result: 'success')
-
-      create(:invoice_item, item_id: @item.id, invoice_id: @invoice_1.id, quantity: 5, unit_price: 100.0)
-      create(:invoice_item, item_id: @item.id, invoice_id: @invoice_2.id, quantity: 50, unit_price: 100.0)
-      create(:invoice_item, item_id: @item.id, invoice_id: @invoice_3.id, quantity: 10, unit_price: 100.0)
-      create(:invoice_item, item_id: @item.id, invoice_id: @invoice_4.id, quantity: 20, unit_price: 100.0)
-      create(:invoice_item, item_id: @item.id, invoice_id: @invoice_4.id, quantity: 25, unit_price: 100.0)
-    end
-
-    it '::total_potential_revenue finds the revenue of unshipped orders', :with_five_plus_invoices do
-      expect(Merchant.total_potential_revenue(3)).to eq([@merchant])
+      expect(Merchant.total_potential_revenue(20)).to eq([@merchant_2, @merchant_4, @merchant_3])
     end
   end
 end
