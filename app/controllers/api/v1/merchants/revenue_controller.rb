@@ -2,7 +2,12 @@ class Api::V1::Merchants::RevenueController < ApplicationController
 
   def merchant_total_revenue
     merchant = Merchant.find_by_id(params[:id])
-    render json: merchant.find_merchant_rev
+    if params[:id].nil? or merchant.nil?
+      record_not_found
+    else
+      merchant = Merchant.find_merchant_rev.find_by_id(params[:id])
+      render json: MerchantRevenueSerializer.new(merchant)
+    end
   end
 
   def most_revenue_merchants
