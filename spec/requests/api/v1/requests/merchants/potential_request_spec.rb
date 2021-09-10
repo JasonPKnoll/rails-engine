@@ -16,9 +16,9 @@ describe 'Merchant Potential API' do
 
     @customer = create(:customer)
 
-    @invoice_1 = create(:invoice, merchant_id: @merchant_1.id, customer_id: @customer.id, status: 'unshipped')
-    @invoice_2 = create(:invoice, merchant_id: @merchant_2.id, customer_id: @customer.id, status: 'unshipped')
-    @invoice_3 = create(:invoice, merchant_id: @merchant_3.id, customer_id: @customer.id, status: 'unshipped')
+    @invoice_1 = create(:invoice, merchant_id: @merchant_1.id, customer_id: @customer.id, status: 'packaged')
+    @invoice_2 = create(:invoice, merchant_id: @merchant_2.id, customer_id: @customer.id, status: 'packaged')
+    @invoice_3 = create(:invoice, merchant_id: @merchant_3.id, customer_id: @customer.id, status: 'packaged')
     @invoice_4 = create(:invoice, merchant_id: @merchant_4.id, customer_id: @customer.id, status: 'shipped')
 
     create(:transaction, invoice_id: @invoice_1.id, result: 'success')
@@ -58,7 +58,7 @@ describe 'Merchant Potential API' do
         expect(response.status).to eq(400)
 
         get "/api/v1/revenue/unshipped?quantity=0"
-        expect(response.status).to eq(400)  
+        expect(response.status).to eq(400)
       end
     end
   end

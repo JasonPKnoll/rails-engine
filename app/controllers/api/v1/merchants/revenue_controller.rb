@@ -21,11 +21,11 @@ class Api::V1::Merchants::RevenueController < ApplicationController
 
   def unshipped
     if params[:quantity].nil?
-      merchants = Merchant.total_potential_revenue(10)
-      render json: UnshippedOrderSerializer.new(merchants)
+      invoices = Invoice.potential_revenue(10)
+      render json: UnshippedOrderSerializer.new(invoices)
     elsif params[:quantity].to_i >= 1
-      merchants = Merchant.total_potential_revenue(params[:quantity])
-      render json: UnshippedOrderSerializer.new(merchants)
+      invoices = Invoice.potential_revenue(params[:quantity])
+      render json: UnshippedOrderSerializer.new(invoices)
     else
       render json: {error: ["Quantity must be greater than 0"]}, status: 400
     end
