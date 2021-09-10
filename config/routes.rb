@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       get 'revenue/merchants', to: 'merchants/revenue#most_revenue_merchants'
       get 'items/find_all', to: 'items/search#find_all'
       get 'revenue/items', to: 'items/revenue#most_revenue_items'
-      get 'revenue/unshipped', to: 'merchant/revenue#unshipped'
+      get 'revenue/unshipped', to: 'merchants/revenue#unshipped'
 
       resources :customers, only: %i[index show]
       resources :merchants, only: %i[index show] do

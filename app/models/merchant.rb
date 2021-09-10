@@ -35,12 +35,12 @@ class Merchant < ApplicationRecord
       .first
   end
 
-  def self.total_potential_revenue(number)
+  def self.total_potential_revenue(total)
     joins(items: [invoices: :transactions])
     .select('merchants.*, SUM(invoice_items.quantity * invoice_items.unit_price) AS potential_revenue')
-    .where.not('invoices.status = ?', 'shipped')
+    .where('invoices.status = ?', 'unshipped')
     .group('merchants.id')
     .order('potential_revenue DESC')
-    .limit(number)
+    .limit(total)
   end
 end
