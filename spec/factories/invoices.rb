@@ -2,6 +2,6 @@ FactoryBot.define do
   factory :invoice do
     # customer { nil }
     # merchant { nil }
-    status { 0 }
+    status { "shipped" } # other options: failed, pending
   end
 end

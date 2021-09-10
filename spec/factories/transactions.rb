@@ -3,6 +3,6 @@ FactoryBot.define do
     # invoice { nil }
     credit_card_number { Faker::Stripe.valid_card }
     credit_card_expiration_date { Faker::Business.credit_card_expiry_date }
-    result { 0 }
+    result { "success" } # other option: fail
   end
 end
