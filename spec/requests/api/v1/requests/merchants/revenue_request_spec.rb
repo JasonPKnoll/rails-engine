@@ -77,9 +77,9 @@ describe "Merchant Rev API" do
         get "/api/v1/revenue/merchants?quantity=#{x}"
 
         revenue = JSON.parse(response.body, symbolize_names: true)
-
-        require "pry"; binding.pry
+        
         expect(response).to be_successful
+        expect(revenue[:data][0][:type]).to eq("merchant_name_revenue")
         expect(revenue[:data].count).to eq(3)
         expect(revenue[:data][0][:attributes][:name]).to eq(@merchant_2.name)
         expect(revenue[:data][1][:attributes][:name]).to eq(@merchant_4.name)
