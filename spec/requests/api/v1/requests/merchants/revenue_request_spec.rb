@@ -30,7 +30,9 @@ describe "Merchant Rev API" do
         revenue = JSON.parse(response.body, symbolize_names: true)
 
         expect(response).to be_successful
-        expect(revenue).to eq(3000.0)
+        expect(revenue[:data][:type]).to eq('merchant_revenue')
+        expect(revenue[:data][:id]).to eq("#{@merchant.id}")
+        expect(revenue[:data][:attributes][:revenue]).to eq(3000.0)
       end
     end
     describe "::Sad Path" do
@@ -77,7 +79,7 @@ describe "Merchant Rev API" do
         get "/api/v1/revenue/merchants?quantity=#{x}"
 
         revenue = JSON.parse(response.body, symbolize_names: true)
-        
+
         expect(response).to be_successful
         expect(revenue[:data][0][:type]).to eq("merchant_name_revenue")
         expect(revenue[:data].count).to eq(3)
