@@ -22,12 +22,14 @@ class Merchant < ApplicationRecord
             .limit(total)
   end
 
-  def self.find_merchant_rev
+  def self.find_merchant_rev(params_id)
     joins(items: [invoices: :transactions])
          .select('merchants.*, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
          .where("invoices.status = ?", "shipped")
          .where("transactions.result = ?", "success")
+         .where("merchants.id =?", params_id)
          .group("merchants.id")
          .order("revenue DESC")
+         .first
   end
 end

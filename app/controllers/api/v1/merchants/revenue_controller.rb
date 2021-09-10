@@ -5,7 +5,7 @@ class Api::V1::Merchants::RevenueController < ApplicationController
     if params[:id].nil? or merchant.nil?
       record_not_found
     else
-      merchant = Merchant.find_merchant_rev.find_by_id(params[:id])
+      merchant = Merchant.find_merchant_rev(params[:id])
       render json: MerchantRevenueSerializer.new(merchant)
     end
   end
