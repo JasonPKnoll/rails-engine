@@ -145,7 +145,7 @@ describe 'Item API' do
   end
 
   describe 'can grab merchant by item id' do
-    describe ':: happy path' do
+    describe '::Happy path' do
       it 'gets merchant by item id', :with_one_item do
         get "/api/v1/items/#{@item.id}/merchant"
         merchant = JSON.parse(response.body, symbolize_names: true)

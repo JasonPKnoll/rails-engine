@@ -48,7 +48,18 @@ describe 'Merchant Potential API' do
       end
     end
     describe '::Sad path' do
+      it "defaults to finding 10 if no quantity is specified" do
+        get "/api/v1/revenue/unshipped?"
 
+        expect(response).to be_successful
+      end
+      it "requires quantity greater that 0" do
+        get "/api/v1/revenue/unshipped?quantity=-2"
+        expect(response.status).to eq(400)
+
+        get "/api/v1/revenue/unshipped?quantity=0"
+        expect(response.status).to eq(400)  
+      end
     end
   end
 end

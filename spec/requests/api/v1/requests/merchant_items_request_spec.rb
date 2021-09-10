@@ -16,6 +16,7 @@ describe 'Merchant Items API' do
     expect(merchant_items[:data].count).to eq(3)
   end
 
+
   it 'returns 404 when no merchant found' do
     merchant_id = 1
 

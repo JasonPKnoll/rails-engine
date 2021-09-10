@@ -51,6 +51,11 @@ describe 'Items Rev API' do
 
         expect(response.status).to eq(400)
       end
+      it 'error 400' do
+        get '/api/v1/revenue/items?'
+
+        expect(response.status).to eq(200)
+      end
     end
   end
 end

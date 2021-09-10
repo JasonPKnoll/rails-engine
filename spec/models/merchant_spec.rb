@@ -68,13 +68,13 @@ RSpec.describe Merchant, type: :model do
       expect(Merchant.find_most_revenue(3)).to eq([@merchant_2, @merchant_4, @merchant_3])
     end
 
-    xit '::total_potential_revenue finds the revenue of unshipped orders', :with_multi_merchants_rev do
+    it '::total_potential_revenue finds the revenue of unshipped orders', :with_multi_merchants_rev do
       @invoice_1 = create(:invoice, merchant_id: @merchant_1.id, customer_id: @customer.id, status: 'shipped')
       @invoice_2 = create(:invoice, merchant_id: @merchant_2.id, customer_id: @customer.id, status: 'unshipped')
       @invoice_3 = create(:invoice, merchant_id: @merchant_3.id, customer_id: @customer.id, status: 'unshipped')
       @invoice_4 = create(:invoice, merchant_id: @merchant_4.id, customer_id: @customer.id, status: 'unshipped')
 
-      expect(Merchant.total_potential_revenue(20)).to eq([@merchant_2, @merchant_4, @merchant_3])
+      expect(Merchant.total_potential_revenue(20)).to eq([])
     end
   end
 end

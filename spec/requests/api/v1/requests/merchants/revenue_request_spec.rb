@@ -37,7 +37,15 @@ describe 'Merchant Rev API' do
       end
     end
     describe '::Sad Path' do
-      it 'error', :with_merchants_rev do
+      it 'returns 400 error with no valid id', :with_merchants_rev do
+        get "/api/v1/revenue/merchants/#{nil}"
+
+        expect(response.status).to eq(400)
+      end
+      it 'returns 404 error wrong merchant_id', :with_merchants_rev do
+        get "/api/v1/revenue/merchants/100"
+
+        expect(response.status).to eq(404)
       end
     end
   end
