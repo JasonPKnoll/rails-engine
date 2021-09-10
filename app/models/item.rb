@@ -9,4 +9,14 @@ class Item < ApplicationRecord
 
     # where("name.downcase ILIKE ?", "#{name}%.").order(:name)
   end
+
+  def self.find_most_revenue(cap)
+    joins(invoices: :transactions)
+    .select('items.*, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
+    .where('transactions.result = ?', 'success')
+    .where('invoices.status = ?', 'shipped')
+    .group('items.id')
+    .order('revenue DESC')
+    .limit(cap)
+  end
 end
